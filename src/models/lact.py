@@ -34,7 +34,8 @@ class LaCTUpdater:
         self,
         model: TTTModel,
         inner_lr: float = 0.01,
-        max_grad_norm: float = 1.0
+        max_grad_norm: float = 1.0,
+        debug: bool = False,
     ):
         """
         Args:
@@ -45,6 +46,7 @@ class LaCTUpdater:
         self.model = model
         self.inner_lr = inner_lr
         self.max_grad_norm = max_grad_norm
+        self.debug = debug
         
         # Accumulated gradients for each TTT layer
         self._accumulated_grads: List[Optional[torch.Tensor]] = [
@@ -74,10 +76,8 @@ class LaCTUpdater:
         input_ids = tokens[:, :-1]
         target_ids = tokens[:, 1:]
         
-        # Zero existing gradients
-        for ttt_layer in self.model.ttt_layers:
-            if ttt_layer.W_h.grad is not None:
-                ttt_layer.W_h.grad.zero_()
+        # Zero existing gradients (entire model to avoid accumulation/NaNs)
+        self.model.model.zero_grad(set_to_none=True)
         
         # Forward pass through model (get logits)
         outputs = self.model.model(input_ids=input_ids, use_cache=False)
@@ -100,12 +100,19 @@ class LaCTUpdater:
         # Step 5.3: Accumulate gradients for each TTT layer's W_h
         for i, ttt_layer in enumerate(self.model.ttt_layers):
             if ttt_layer.W_h.grad is not None:
-                grad = ttt_layer.W_h.grad.clone()
+                grad = ttt_layer.W_h.grad.detach()
                 # Convert to FP32 for stable accumulation
                 grad = grad.float()
+
+                # Guard: if grad has NaN/Inf, skip accumulating for this layer
+                if not torch.isfinite(grad).all():
+                    if self.debug:
+                        bad = (~torch.isfinite(grad)).sum().item()
+                        print(f"[LaCT] non-finite grad in layer {i}: bad={bad}")
+                    continue
                 
                 if self._accumulated_grads[i] is None:
-                    self._accumulated_grads[i] = grad
+                    self._accumulated_grads[i] = grad.clone()
                 else:
                     self._accumulated_grads[i] += grad
         
@@ -119,9 +126,23 @@ class LaCTUpdater:
             for i, ttt_layer in enumerate(self.model.ttt_layers):
                 grad = self._accumulated_grads[i]
                 if grad is not None:
+                    # Guard: skip non-finite grads entirely
+                    if not torch.isfinite(grad).all():
+                        if self.debug:
+                            bad = (~torch.isfinite(grad)).sum().item()
+                            print(f"[LaCT] skipping update for layer {i}: non-finite grad bad={bad}")
+                        self._accumulated_grads[i] = None
+                        continue
+
                     # Clip gradient
                     grad_norm = torch.norm(grad)
-                    if grad_norm > self.max_grad_norm and grad_norm > 0:
+                    if (not torch.isfinite(grad_norm)) or grad_norm <= 0:
+                        if self.debug:
+                            print(f"[LaCT] skipping update for layer {i}: grad_norm={grad_norm}")
+                        self._accumulated_grads[i] = None
+                        continue
+
+                    if grad_norm > self.max_grad_norm:
                         grad = grad * (self.max_grad_norm / grad_norm)
                     
                     # Convert grad to same dtype as W_h
@@ -129,6 +150,13 @@ class LaCTUpdater:
                     
                     # Update W_h
                     ttt_layer.W_h.data -= self.inner_lr * grad
+
+                    # Guard: if W_h became non-finite, revert this layer to initial weights
+                    if not torch.isfinite(ttt_layer.W_h).all():
+                        if self.debug:
+                            bad = (~torch.isfinite(ttt_layer.W_h)).sum().item()
+                            print(f"[LaCT] W_h became non-finite in layer {i} (bad={bad}); resetting layer")
+                        ttt_layer.reset_weights()
                     
                     # Clear accumulated gradient
                     self._accumulated_grads[i] = None
