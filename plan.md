@@ -6,13 +6,13 @@
 
 ## Phase 0: Setup
 
-- [ ] **Step 0.1**: Create GitHub repo `ttt-playground`, push existing files (spec.md, README.md, requirements.txt)
+- [x] **Step 0.1**: Create GitHub repo `ttt-playground`, push existing files (spec.md, README.md, requirements.txt)
   - **Test**: `git remote -v` shows GitHub URL
 
-- [ ] **Step 0.2**: Create Colab notebook, clone repo, verify GPU access
+- [x] **Step 0.2**: Create Colab notebook, clone repo, verify GPU access
   - **Test**: `torch.cuda.is_available()` returns `True`, `nvidia-smi` shows T4
 
-- [ ] **Step 0.3**: Install dependencies in Colab
+- [x] **Step 0.3**: Install dependencies in Colab
   - **Test**: `import torch, transformers, fitz, gradio` all succeed
 
 ---
