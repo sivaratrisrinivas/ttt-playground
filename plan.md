@@ -63,10 +63,10 @@
 - [x] **Step 3.2**: Create `src/models/ttt_linear.py` with `TTTLinear.__init__(input_dim, hidden_dim, output_dim, inner_lr)`
   - **Test**: Instantiate `TTTLinear(768, 2048, 768)`, verify `W_h.shape == (2048, 768)`
 
-- [ ] **Step 3.3**: Implement `TTTLinear.forward(x, learning=False)` - inference mode only
+- [x] **Step 3.3**: Implement `TTTLinear.forward(x, learning=False)` - inference mode only
   - **Test**: Pass `[1, 128, 768]` tensor, output shape `[1, 128, 768]`
 
-- [ ] **Step 3.4**: Store initial weights in `TTTLinear._W_h_initial` for reset
+- [x] **Step 3.4**: Store initial weights in `TTTLinear._W_h_initial` for reset
   - **Test**: After init, `torch.allclose(W_h, _W_h_initial)` is True
 
 - [ ] **Step 3.5**: Implement `TTTLinear.forward(x, learning=True)` - compute self-supervised loss, update W_h

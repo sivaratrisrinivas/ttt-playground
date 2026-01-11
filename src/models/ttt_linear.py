@@ -91,7 +91,43 @@ class TTTLinear(nn.Module):
         Update W_h using self-supervised learning.
         
         Self-supervised objective: predict next token's hidden state from current.
-        Loss = MSE(W_h @ h_t, h_{t+1})
+        We use a simple reconstruction loss on the input sequence.
         """
-        # Placeholder - will be implemented in Step 3.5
-        pass
+        # Use input x for self-supervised learning
+        # Predict: given x[t], predict x[t+1] via W_h
+        # This is a simplified TTT objective
+        
+        seq_len = x.shape[1]
+        if seq_len < 2:
+            return  # Need at least 2 tokens for next-token prediction
+        
+        # Current and next tokens
+        x_curr = x[:, :-1, :]  # [batch, seq-1, input_dim]
+        x_next = x[:, 1:, :]   # [batch, seq-1, input_dim]
+        
+        # Predict next token: project through W_h and back
+        # h = x_curr @ W_h.T  -> [batch, seq-1, hidden_dim]
+        # pred = h @ W_h      -> [batch, seq-1, input_dim]
+        h_curr = torch.matmul(x_curr, self.W_h.t())
+        pred = torch.matmul(h_curr, self.W_h)
+        
+        # MSE loss
+        loss = torch.mean((pred - x_next) ** 2)
+        
+        # Compute gradient w.r.t. W_h
+        grad = torch.autograd.grad(loss, self.W_h, retain_graph=False)[0]
+        
+        # Update W_h with gradient descent (inner loop)
+        with torch.no_grad():
+            self.W_h.data -= self.inner_lr * grad
+    
+    def reset_weights(self) -> None:
+        """Reset W_h to initial state (for new document)."""
+        with torch.no_grad():
+            self.W_h.data.copy_(self._W_h_initial)
+    
+    def get_weight_delta(self) -> float:
+        """Return L2 norm of weight change from initial."""
+        with torch.no_grad():
+            delta = self.W_h - self._W_h_initial
+            return torch.norm(delta).item()
