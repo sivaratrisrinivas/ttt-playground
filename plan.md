@@ -69,23 +69,23 @@
 - [x] **Step 3.4**: Store initial weights in `TTTLinear._W_h_initial` for reset
   - **Test**: After init, `torch.allclose(W_h, _W_h_initial)` is True
 
-- [ ] **Step 3.5**: Implement `TTTLinear.forward(x, learning=True)` - compute self-supervised loss, update W_h
+- [x] **Step 3.5**: Implement `TTTLinear.forward(x, learning=True)` - compute self-supervised loss, update W_h
   - **Test**: Call with `learning=True`, verify `W_h` differs from `_W_h_initial`
 
-- [ ] **Step 3.6**: Implement `TTTLinear.reset_weights()`
+- [x] **Step 3.6**: Implement `TTTLinear.reset_weights()`
   - **Test**: Learn, reset, verify `torch.allclose(W_h, _W_h_initial)`
 
-- [ ] **Step 3.7**: Implement `TTTLinear.get_weight_delta() -> float`
+- [x] **Step 3.7**: Implement `TTTLinear.get_weight_delta() -> float`
   - **Test**: Learn, call `get_weight_delta()`, verify > 0
 
-- [ ] **Step 3.8**: Verify gradient flow through TTTLinear in inference mode
+- [x] **Step 3.8**: Verify gradient flow through TTTLinear in inference mode
   - **Test**: Backward pass on output, verify input.grad is not None
 
 ---
 
 ## Phase 4: TinyLlama Integration
 
-- [ ] **Step 4.1**: Create `src/models/ttt_model.py` with `TTTModel` class skeleton
+- [x] **Step 4.1**: Create `src/models/ttt_model.py` with `TTTModel` class skeleton
   - **Test**: Class imports without errors
 
 - [ ] **Step 4.2**: Implement `TTTModel.from_pretrained()` - load TinyLlama, no modifications yet
