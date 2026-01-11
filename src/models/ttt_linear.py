@@ -15,7 +15,7 @@ class TTTLinear(nn.Module):
     Replaces standard MLP in transformer blocks.
     
     Architecture:
-        x → W_in → hidden → activation → W_h → W_out → output
+        x → (W_h) → hidden → activation → W_out → output
         
     During learning (learning=True):
         - Compute self-supervised loss (next-token prediction on hidden states)
@@ -42,12 +42,10 @@ class TTTLinear(nn.Module):
         self.hidden_dim = hidden_dim
         self.output_dim = output_dim
         self.inner_lr = inner_lr
-        
-        # Input projection: input_dim → hidden_dim
-        self.W_in = nn.Linear(input_dim, hidden_dim, bias=False)
-        
+
         # Learnable hidden weights - this is what TTT updates
-        # Shape: (hidden_dim, input_dim) per spec test requirement
+        # Shape: (hidden_dim, input_dim) per spec test requirement.
+        # Forward uses x @ W_h.T to produce hidden_dim features.
         self.W_h = nn.Parameter(torch.empty(hidden_dim, input_dim))
         nn.init.kaiming_uniform_(self.W_h)
         
@@ -72,18 +70,14 @@ class TTTLinear(nn.Module):
         Returns:
             Output tensor [batch, seq, dim]
         """
-        # Step 1: Input projection
-        hidden = self.W_in(x)  # [batch, seq, hidden_dim]
-        
-        # Step 2: Apply activation
+        # Step 1: project into hidden_dim using W_h
+        # x: [batch, seq, input_dim], W_h.T: [input_dim, hidden_dim]
+        hidden = torch.matmul(x, self.W_h.t())  # [batch, seq, hidden_dim]
+
+        # Step 2: activation in hidden space
         hidden = self.activation(hidden)
-        
-        # Step 3: Apply W_h transformation
-        # hidden: [batch, seq, hidden_dim], W_h: [hidden_dim, input_dim]
-        # Result: [batch, seq, input_dim]
-        hidden = torch.matmul(hidden, self.W_h)
-        
-        # Step 4: Output projection
+
+        # Step 3: output projection
         output = self.W_out(hidden)  # [batch, seq, output_dim]
         
         # Learning mode: update W_h (implemented in Step 3.5)
