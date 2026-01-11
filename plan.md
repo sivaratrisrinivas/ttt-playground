@@ -157,7 +157,7 @@
 - [x] **Step 7.1**: Create `src/inference/__init__.py` (empty)
   - **Test**: `from src.inference import *` succeeds
 
-- [ ] **Step 7.2**: Create `src/inference/generator.py` with `Generator.__init__(model, tokenizer)`
+- [x] **Step 7.2**: Create `src/inference/generator.py` with `Generator.__init__(model, tokenizer)`
   - **Test**: Instantiate with TTTModel
 
 - [ ] **Step 7.3**: Implement `Generator.generate(prompt, max_tokens, temperature) -> Answer`
