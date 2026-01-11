@@ -71,7 +71,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Or use Google Colab: [Open Notebook](https://colab.research.google.com/)
+Or use Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sivaratrisrinivas/ttt-playground/blob/main/notebooks/00_setup.ipynb)
 
 ---
 
