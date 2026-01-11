@@ -160,7 +160,7 @@
 - [x] **Step 7.2**: Create `src/inference/generator.py` with `Generator.__init__(model, tokenizer)`
   - **Test**: Instantiate with TTTModel
 
-- [ ] **Step 7.3**: Implement `Generator.generate(prompt, max_tokens, temperature) -> Answer`
+- [x] **Step 7.3**: Implement `Generator.generate(prompt, max_tokens, temperature) -> Answer`
   - **Test**: Generate answer, verify `Answer.text` is non-empty string
 
 - [ ] **Step 7.4**: Implement `Generator.compare(prompt) -> (ttt_answer, base_answer)`
