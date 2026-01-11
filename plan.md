@@ -132,10 +132,10 @@
 
 ## Phase 6: Learning Pipeline
 
-- [ ] **Step 6.1**: Create `src/learning/__init__.py` (empty)
+- [x] **Step 6.1**: Create `src/learning/__init__.py` (empty)
   - **Test**: `from src.learning import *` succeeds
 
-- [ ] **Step 6.2**: Create `src/learning/metrics.py` with `MetricsTracker` class
+- [x] **Step 6.2**: Create `src/learning/metrics.py` with `MetricsTracker` class
   - **Test**: Instantiate, call `record_loss(0.5)`, verify `loss_history == [0.5]`
 
 - [ ] **Step 6.3**: Implement `MetricsTracker.get_metrics() -> LearningMetrics`
