@@ -88,25 +88,25 @@
 - [x] **Step 4.1**: Create `src/models/ttt_model.py` with `TTTModel` class skeleton
   - **Test**: Class imports without errors
 
-- [ ] **Step 4.2**: Implement `TTTModel.from_pretrained()` - load TinyLlama, no modifications yet
+- [x] **Step 4.2**: Implement `TTTModel.from_pretrained()` - load TinyLlama, no modifications yet
   - **Test**: Load model, run `model.generate("Hello")`, get valid output
 
-- [ ] **Step 4.3**: Identify MLP layers in TinyLlama architecture (print layer names)
+- [x] **Step 4.3**: Identify MLP layers in TinyLlama architecture (print layer names)
   - **Test**: Print `model.named_modules()`, identify MLP module path pattern
 
-- [ ] **Step 4.4**: Replace ONE MLP layer (layer 0) with TTTLinear
+- [x] **Step 4.4**: Replace ONE MLP layer (layer 0) with TTTLinear
   - **Test**: `model.model.layers[0].mlp` is instance of `TTTLinear`
 
-- [ ] **Step 4.5**: Verify model still runs forward pass after single layer replacement
+- [x] **Step 4.5**: Verify model still runs forward pass after single layer replacement
   - **Test**: `model.generate("Hello")` produces output (may be garbage, that's ok)
 
-- [ ] **Step 4.6**: Replace ALL MLP layers with TTTLinear (or configurable subset)
+- [x] **Step 4.6**: Replace ALL MLP layers with TTTLinear (or configurable subset)
   - **Test**: Count TTTLinear instances == number of transformer layers
 
-- [ ] **Step 4.7**: Implement `TTTModel.reset_learning()` - reset all TTTLinear layers
+- [x] **Step 4.7**: Implement `TTTModel.reset_learning()` - reset all TTTLinear layers
   - **Test**: Learn on text, reset, verify all `get_weight_delta()` == 0
 
-- [ ] **Step 4.8**: Implement `TTTModel.clear_context()` - clear KV cache
+- [x] **Step 4.8**: Implement `TTTModel.clear_context()` - clear KV cache
   - **Test**: Generate, clear, generate again - no error
 
 ---
