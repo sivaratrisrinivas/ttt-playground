@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from time import perf_counter
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Optional
 
 from src.config import Document, LearningConfig
 from src.learning.metrics import MetricsTracker
@@ -43,7 +43,12 @@ class TTTTrainer:
             max_grad_norm=self.config.max_grad_norm,
         )
 
-    def train_on_document(self, document: Document) -> "LearningMetrics":
+    def train_on_document(
+        self,
+        document: Document,
+        *,
+        progress_callback: Optional[Callable[[int, int, float], None]] = None,
+    ) -> "LearningMetrics":
         """
         Orchestrate learning over all chunks of a document.
 
@@ -62,11 +67,14 @@ class TTTTrainer:
         t0 = perf_counter()
 
         tokens_processed = 0
-        for chunk in document.chunks:
+        total = len(document.chunks)
+        for chunk_idx, chunk in enumerate(document.chunks):
             tokens_processed += int(chunk.token_count)
             loss = self.updater.process_chunk(chunk.token_ids)
             self.updater.apply_update()
             self.metrics.record_loss(loss)
+            if progress_callback is not None:
+                progress_callback(chunk_idx, total, float(loss))
 
         t1 = perf_counter()
 

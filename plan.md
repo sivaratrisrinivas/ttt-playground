@@ -144,10 +144,10 @@
 - [x] **Step 6.4**: Create `src/learning/trainer.py` with `TTTTrainer.__init__(model, config)`
   - **Test**: Instantiate with model and config
 
-- [ ] **Step 6.5**: Implement `TTTTrainer.train_on_document(document)` - orchestrate learning
+- [x] **Step 6.5**: Implement `TTTTrainer.train_on_document(document)` - orchestrate learning
   - **Test**: Train on 3-chunk doc, get `LearningMetrics` with `final_loss < initial_loss`
 
-- [ ] **Step 6.6**: Add progress callback support to `TTTTrainer.train_on_document()`
+- [x] **Step 6.6**: Add progress callback support to `TTTTrainer.train_on_document()`
   - **Test**: Pass callback, verify called with (chunk_idx, total, loss) for each chunk
 
 ---
