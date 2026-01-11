@@ -60,7 +60,7 @@
 - [x] **Step 3.1**: Create `src/models/__init__.py` (empty)
   - **Test**: `from src.models import *` succeeds
 
-- [ ] **Step 3.2**: Create `src/models/ttt_linear.py` with `TTTLinear.__init__(input_dim, hidden_dim, output_dim, inner_lr)`
+- [x] **Step 3.2**: Create `src/models/ttt_linear.py` with `TTTLinear.__init__(input_dim, hidden_dim, output_dim, inner_lr)`
   - **Test**: Instantiate `TTTLinear(768, 2048, 768)`, verify `W_h.shape == (2048, 768)`
 
 - [ ] **Step 3.3**: Implement `TTTLinear.forward(x, learning=False)` - inference mode only
