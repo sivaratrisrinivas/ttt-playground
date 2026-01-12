@@ -186,32 +186,35 @@
 
 ## Phase 9: Gradio UI
 
-- [ ] **Step 9.1**: Create `app.py` skeleton with Gradio Blocks layout
+- [x] **Step 9.1**: Create `app.py` skeleton with Gradio Blocks layout
   - **Test**: `python app.py` launches UI on localhost
 
-- [ ] **Step 9.2**: Implement PDF upload component + file preview
+- [x] **Step 9.2**: Implement PDF upload component + file preview
   - **Test**: Upload PDF, see filename displayed
 
-- [ ] **Step 9.3**: Implement "Start Learning" button + progress bar
+- [x] **Step 9.3**: Implement "Start Learning" button + progress bar
   - **Test**: Click button, progress bar updates during learning
 
-- [ ] **Step 9.4**: Add learning metrics display (loss curve, tokens processed)
+- [x] **Step 9.4**: Add learning metrics display (loss curve, tokens processed)
   - **Test**: After learning, see loss value and token count
 
-- [ ] **Step 9.5**: Add "Context Cleared" indicator
+- [x] **Step 9.5**: Add "Context Cleared" indicator
   - **Test**: After learning complete, indicator visible
 
-- [ ] **Step 9.6**: Implement question input + submit button
+- [x] **Step 9.6**: Implement question input + submit button
   - **Test**: Type question, click submit, see response
 
-- [ ] **Step 9.7**: Implement side-by-side comparison display (TTT vs Base)
+- [x] **Step 9.7**: Implement side-by-side comparison display (TTT vs Base)
   - **Test**: After Q&A, see two answer columns
 
-- [ ] **Step 9.8**: Implement "Reset" button to clear session
+- [x] **Step 9.8**: Implement "Reset" button to clear session
   - **Test**: Click reset, UI clears, can upload new PDF
 
-- [ ] **Step 9.9**: Add error handling UI (invalid PDF, too short, etc.)
+- [x] **Step 9.9**: Add error handling UI (invalid PDF, too short, etc.)
   - **Test**: Upload corrupt PDF, see error message
+
+- [x] **Step 9.10**: Create Colab notebook for running demo (`notebooks/06_gradio_demo.ipynb`)
+  - **Test**: Run on Colab, get public share URL
 
 ---
 

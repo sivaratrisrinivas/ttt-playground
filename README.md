@@ -2,7 +2,25 @@
 
 > A Test-Time Training demo: upload a PDF, the model *learns* it, then answers questions **without the document in context**.
 
-[![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/YOUR_USERNAME/ttt-playground)
+[![Open Demo in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sivaratrisrinivas/ttt-playground/blob/main/notebooks/06_gradio_demo.ipynb)
+
+---
+
+## Try It Now
+
+**Click the badge above** → Run all cells → Get a public URL → Upload PDF → Demo!
+
+That's it. Free T4 GPU, no setup required.
+
+---
+
+## What This Does
+
+1. **Upload PDF** - Document is parsed and chunked
+2. **Start Learning** - Model updates weights on each chunk (watch loss decrease!)
+3. **Context Cleared** - KV cache is wiped (proof: no cheating)
+4. **Ask Questions** - Model answers from learned weights only
+5. **Compare** - See TTT answer vs Base model (which can't answer)
 
 ---
 
@@ -21,13 +39,19 @@ This directly addresses [Adaption Labs](https://adaptionlabs.ai/)' core thesis:
 
 ---
 
-## Demo
+## Recommended Demo PDFs
 
-1. Upload a PDF
-2. Watch the model *learn* (loss decreases)
-3. Context is **cleared**
-4. Ask questions → model answers from learned weights
-5. Compare: TTT model (learned) vs Base model (no doc)
+For best results, use **text-heavy PDFs** (not scanned images):
+
+| PDF | Why It's Good | Link |
+|-----|--------------|------|
+| **The Hardware Lottery** | Short, factual, relevant to Adaption Labs | [Download](https://arxiv.org/pdf/2009.06489.pdf) |
+| **Attention Is All You Need** | Famous paper, lots of facts | [Download](https://arxiv.org/pdf/1706.03762.pdf) |
+
+**Example questions:**
+- "Who wrote this paper?"
+- "What is the main argument?"
+- "What year was this published?"
 
 ---
 
@@ -53,25 +77,7 @@ PDF → Extract → Chunk (2048 tok) → TTT Learning → Clear Context → Q&A
 | Model | TinyLlama-1.1B-Chat |
 | PDF | PyMuPDF |
 | UI | Gradio |
-| Hosting | HF Spaces (T4) |
-
----
-
-## Local Development
-
-```bash
-# Clone
-git clone https://github.com/YOUR_USERNAME/ttt-playground.git
-cd ttt-playground
-
-# Install
-pip install -r requirements.txt
-
-# Run (needs GPU)
-python app.py
-```
-
-Or use Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sivaratrisrinivas/ttt-playground/blob/main/notebooks/00_setup.ipynb)
+| Hosting | Google Colab (T4) |
 
 ---
 
