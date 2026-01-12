@@ -130,19 +130,46 @@ class TTTModel(nn.Module):
         
         return ttt_layers
     
-    def generate(self, prompt: str, max_new_tokens: int = 100, **kwargs) -> str:
+    def generate(
+        self, 
+        prompt: str, 
+        max_new_tokens: int = 100,
+        temperature: float = 0.7,
+        do_sample: bool = None,
+        **kwargs
+    ) -> str:
         """Generate text from prompt using current (possibly learned) weights."""
         # Tokenize input
         inputs = self.tokenizer(prompt, return_tensors="pt")
         inputs = {k: v.to(self.model.device) for k, v in inputs.items()}
         
+        # Determine sampling strategy
+        if do_sample is None:
+            do_sample = temperature > 0
+        
+        # Build generation config
+        gen_kwargs = {
+            "max_new_tokens": max_new_tokens,
+            "pad_token_id": self.tokenizer.pad_token_id,
+            "eos_token_id": self.tokenizer.eos_token_id,
+            "do_sample": do_sample,
+            "repetition_penalty": 1.2,  # Prevent repetition loops
+            "no_repeat_ngram_size": 3,  # No repeating 3-grams
+        }
+        
+        if do_sample:
+            gen_kwargs["temperature"] = temperature
+            gen_kwargs["top_p"] = 0.9
+            gen_kwargs["top_k"] = 50
+        
+        # Override with any explicit kwargs
+        gen_kwargs.update(kwargs)
+        
         # Generate
         with torch.no_grad():
             outputs = self.model.generate(
                 **inputs,
-                max_new_tokens=max_new_tokens,
-                pad_token_id=self.tokenizer.pad_token_id,
-                **kwargs
+                **gen_kwargs
             )
         
         # Decode and return

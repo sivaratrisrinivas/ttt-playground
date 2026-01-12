@@ -57,7 +57,6 @@ class Generator:
             prompt,
             max_new_tokens=max_tokens,
             temperature=temperature,
-            do_sample=temperature > 0,
         )
         
         t1 = perf_counter()
