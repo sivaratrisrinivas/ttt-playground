@@ -32,3 +32,4 @@ ENV/
 Thumbs.db
 
 .cursor/
+.session_state.pt

@@ -1,7 +1,7 @@
 """Token-based text chunking for documents"""
 from typing import List
 from transformers import PreTrainedTokenizer
-from src.config import DocumentChunk
+from config import DocumentChunk
 
 
 class DocumentChunker:
@@ -16,7 +16,7 @@ class DocumentChunker:
         Initialize chunker.
         
         Args:
-            tokenizer: HuggingFace tokenizer (e.g., TinyLlama tokenizer)
+            tokenizer: HuggingFace tokenizer (e.g., Qwen2.5-1.5B tokenizer)
             chunk_size: Maximum tokens per chunk (default: 2048)
         """
         self.tokenizer = tokenizer

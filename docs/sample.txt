@@ -1,0 +1,27 @@
+# Test Document for Learn-Doc
+
+This is a simple test document for testing the learn-doc TTT system.
+
+## Key Facts
+
+- The main topic of this document is artificial intelligence.
+- The capital of France is Paris.
+- The inventor of the World Wide Web is Tim Berners-Lee.
+- Water boils at 100 degrees Celsius at sea level.
+- The fastest land animal is the cheetah, which can run up to 70 mph.
+
+## About TTT
+
+Test-Time Training (TTT) is a paradigm where models can learn at inference time. Unlike traditional machine learning where the model is frozen after training, TTT allows models to adapt to new information during use.
+
+## Simple Questions
+
+- What is the main topic of this document?
+- What is the capital of France?
+- Who invented the World Wide Web?
+- At what temperature does water boil?
+- What is the fastest land animal?
+
+## Conclusion
+
+This document contains simple factual information that can be used to test whether the TTT model has successfully learned from the text.

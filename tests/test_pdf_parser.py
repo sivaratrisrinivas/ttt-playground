@@ -1,6 +1,6 @@
 """Tests for PDFParser - Step 2.2, 2.3"""
 import pytest
-from src.document.pdf_parser import PDFParser, PDFExtractionError
+from pdf_parser import PDFParser, PDFExtractionError
 
 
 class TestPDFParser:

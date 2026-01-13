@@ -1,8 +1,8 @@
 """Tests for DocumentChunker - Step 2.4, 2.5, 2.6"""
 import pytest
 from transformers import AutoTokenizer
-from src.document.chunker import DocumentChunker
-from src.config import DocumentChunk as ConfigDocumentChunk
+from chunker import DocumentChunker
+from config import DocumentChunk as ConfigDocumentChunk
 
 
 class TestDocumentChunker:
@@ -10,10 +10,10 @@ class TestDocumentChunker:
     
     @pytest.fixture
     def tokenizer(self):
-        """Create TinyLlama tokenizer for testing"""
-        # Use a small tokenizer for testing (TinyLlama if available, else GPT-2)
+        """Create Qwen2.5-1.5B tokenizer for testing"""
+        # Use a small tokenizer for testing (Qwen2.5-1.5B if available, else GPT-2)
         try:
-            return AutoTokenizer.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
+            return AutoTokenizer.from_pretrained("Qwen/Qwen2.5-1.5B-Instruct")
         except:
             # Fallback to GPT-2 for local testing
             return AutoTokenizer.from_pretrained("gpt2")
